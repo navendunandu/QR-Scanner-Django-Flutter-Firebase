@@ -68,7 +68,7 @@ def homepage(request):
 
 def generate_qrcode(request):
     user = db.collection('tbl_user').document(request.session['uid']).get().to_dict()
-    user_data = {'username': user['user_name'], 'id': user['user_id']}
+    user_data = {'username': user['user_name'], 'id': user['user_id'],'app':'QRSCANNER'}
     user_data_json = json.dumps(user_data)
     qr = qrcode.QRCode(
         version=1,

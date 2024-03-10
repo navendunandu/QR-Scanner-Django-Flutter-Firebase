@@ -14,6 +14,36 @@ class QRResult extends StatefulWidget {
 class _QRResultState extends State<QRResult> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   DateTime now = DateTime.now();
+  bool attendanceRegistered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkAttendance();
+  }
+
+  Future<void> checkAttendance() async {
+    try {
+      String formattedDate = "${now.year}-${now.month}-${now.day}";
+      QuerySnapshot querySnapshot = await db
+          .collection('attendance')
+          .where('userId', isEqualTo: widget.qrData['id'])
+          .where('date', isEqualTo: formattedDate)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        setState(() {
+          attendanceRegistered = true;
+        });
+      } else {
+        setState(() {
+          attendanceRegistered = false;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> register() async {
     try {
@@ -48,7 +78,7 @@ class _QRResultState extends State<QRResult> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Data'),
+        title: const Text('QR Code Data'),
       ),
       body: Center(
         child: Column(
@@ -56,11 +86,17 @@ class _QRResultState extends State<QRResult> {
           children: [
             Text('ID: ${widget.qrData['id']}'),
             Text('Name: ${widget.qrData['username']}'),
-            ElevatedButton(
-                onPressed: () {
-                  register();
-                },
-                child: Text('Register Attendance'))
+            attendanceRegistered
+                ? const Text(
+                    'Today\'s attendance already registered',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )
+                : ElevatedButton(
+                    onPressed: () {
+                      register();
+                    },
+                    child: const Text('Register Attendance'),
+                  ),
             // Add more fields as needed
           ],
         ),

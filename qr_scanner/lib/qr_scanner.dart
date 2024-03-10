@@ -44,13 +44,24 @@ class _QRScannerState extends State<QRScanner> {
       print(scanData.code);
       String? data = scanData.code;
       Map<String, dynamic> jsonData = jsonDecode(data!);
-      controller.dispose();
-      Navigator.push(
+      if (jsonData.containsKey('app') && jsonData['app'] == 'QRSCANNER') {
+        // Proceed only if the scanned QR code is generated from your website
+        controller.dispose();
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => QRResult(qrData: jsonData),
-          ));
-      // Add your logic here for what to do with the scanned data
+          ),
+        );
+      } else {
+        // Show a Snackbar for invalid QR code
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid QR Code.'),
+            duration: Duration(seconds: 5), // Adjust as needed
+          ),
+        );
+      }
     });
   }
 
