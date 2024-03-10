@@ -26,13 +26,13 @@ This project consists of a web application built using Django HTML and a mobile 
 
 1. Install Python (if not already installed).
 2. Install Django using pip:
-  pip install django
+```pip install django```
 3. Clone this repository.
 4. Navigate to the `web_application` directory.
 5. Run the following command to install Django libraries using the requirement.txt file:
-  pip install -r requirement.txt
+ ```pip install -r requirement.txt```
 6. Run the Django development server:
-  python manage.py runserver
+ ```python manage.py runserver```
 
 ### Mobile Application (Flutter):
 
@@ -40,10 +40,10 @@ This project consists of a web application built using Django HTML and a mobile 
 2. Clone this repository.
 3. Navigate to the `mobile_application` directory.
 4. Run the following command to get the dependencies:
-  flutter pub get
+ ```flutter pub get```
 5. Connect a device or start an emulator.
 6. Run the app:
-  flutter run
+ ```flutter run```
 
 ## Contributing
 
